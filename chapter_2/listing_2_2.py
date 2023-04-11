@@ -1,6 +1,8 @@
 """
 Отличие сопрограммы от функции
 """
+
+
 def function_add_one(number: int) -> int:
     return number + 1
 
