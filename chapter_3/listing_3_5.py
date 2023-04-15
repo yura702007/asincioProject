@@ -36,3 +36,6 @@ try:
             connection.send(buffer)
 finally:
     server_socket.close()
+    """
+    FAIL
+    """
