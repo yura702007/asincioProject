@@ -13,17 +13,18 @@ server_socket.listen()
 
 print('Сервер запущен')
 try:
-    connections, client_address = server_socket.accept()
+    connection, client_address = server_socket.accept()
     print(f'Получен запрос на подключение от {client_address}!')
 
     buffer = b''  # буфер обмена
     while buffer[-2:] != b'\r\n':
-        data = connections.recv(2)
+        data = connection.recv(2)  # чтение данных
         if not data:
             break
         else:
             print(f'Получены данные: {data}')
             buffer += data
     print(f'Все данные: {buffer}')
+    connection.sendall(buffer)  # отправка данных клиенту
 finally:
     server_socket.close()
