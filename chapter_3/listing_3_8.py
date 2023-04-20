@@ -7,8 +7,14 @@ from asyncio import AbstractEventLoop
 
 
 async def echo(connection: socket, loop: AbstractEventLoop) -> None:
+    message = b''
     while data := await loop.sock_recv(connection, 1024):  # В бесконечном цикле ожидаем данные от клиента
-        await loop.sock_sendall(connection, data)  # Получив данные отправляем их обратно клиенту
+        message += data
+        if data == b'\r\n':
+            if message == b'boom\r\n':
+                raise Exception('Неожиданная ошибка сети')
+            await loop.sock_sendall(connection, message.upper())  # Получив данные отправляем их обратно клиенту
+            message = b''
 
 
 async def listen_for_connection(server_socket: socket, loop: AbstractEventLoop):
