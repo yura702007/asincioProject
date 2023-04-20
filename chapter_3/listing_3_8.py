@@ -4,17 +4,23 @@
 import asyncio
 import socket
 from asyncio import AbstractEventLoop
+import logging
 
 
 async def echo(connection: socket, loop: AbstractEventLoop) -> None:
-    message = b''
-    while data := await loop.sock_recv(connection, 1024):  # В бесконечном цикле ожидаем данные от клиента
-        message += data
-        if data == b'\r\n':
-            if message == b'boom\r\n':
-                raise Exception('Неожиданная ошибка сети')
-            await loop.sock_sendall(connection, message.upper())  # Получив данные отправляем их обратно клиенту
-            message = b''
+    try:
+        message = b''
+        while data := await loop.sock_recv(connection, 1024):  # В бесконечном цикле ожидаем данные от клиента
+            message += data
+            if data == b'\r\n':
+                if message == b'boom\r\n':
+                    raise Exception('Неожиданная ошибка сети')
+                await loop.sock_sendall(connection, message.upper())  # Получив данные отправляем их обратно клиенту
+                message = b''
+    except Exception as exp:
+        logging.exception(exp)
+    finally:
+        connection.close()
 
 
 async def listen_for_connection(server_socket: socket, loop: AbstractEventLoop):
@@ -40,3 +46,4 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+    print(TASKS)
