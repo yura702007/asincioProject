@@ -17,7 +17,7 @@ async def main():
     async with ClientSession() as session:
         url = 'https://www.example.com'
         status = await fetch_status(session, url)
-        print(f'Состояние для {url} было равно{status}')
+        print(f'Состояние для {url} было равно {status}')
 
 
 if __name__ == '__main__':
