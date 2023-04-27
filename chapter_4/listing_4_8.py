@@ -12,7 +12,7 @@ async def main():
     async with ClientSession() as session:
         urls = ['https://example.com', 'python://example.com']
         tasks = [fetch_status(session=session, url=url) for url in urls]
-        status_codes = await asyncio.gather(*tasks, return_exceptions=False)
+        status_codes = await asyncio.gather(*tasks, return_exceptions=True)
         print(status_codes)
 
 
