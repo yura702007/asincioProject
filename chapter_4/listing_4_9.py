@@ -16,8 +16,11 @@ async def main():
             fetch_status(session, 'https://example.com', 10)
         ]
         for task in asyncio.as_completed(fetchers, timeout=2):
-            result = await task
-            print(result)
+            try:
+                result = await task
+                print(result)
+            except asyncio.TimeoutError as exc:
+                print(exc.__doc__)
 
 
 if __name__ == '__main__':
