@@ -21,6 +21,8 @@ async def main():
                 print(result)
             except asyncio.TimeoutError as exc:
                 print(exc.__doc__)
+        for task in asyncio.tasks.all_tasks():
+            print(task)
 
 
 if __name__ == '__main__':
