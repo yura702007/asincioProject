@@ -34,7 +34,7 @@ async def query_products_synchronously(pool, queries):
 
 @async_timed()
 async def query_products_concurrently(pool, queries):
-    queries = [asyncio.create_task(query_product(pool)) for _ in range(queries)]
+    queries = [query_product(pool) for _ in range(queries)]
     return await asyncio.gather(*queries)
 
 
