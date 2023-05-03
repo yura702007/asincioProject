@@ -12,6 +12,7 @@ async def main():
                                        database='products',
                                        password='password')
 
+    # начать транзакцию базы данных
     async with connection.transaction():
         await connection.execute("INSERT INTO brand "
                                  "VALUES(DEFAULT, 'brand_1')")
@@ -22,6 +23,7 @@ async def main():
         SELECT brand_name FROM brand
         WHERE brand_name LIKE 'brand%'
     """
+    # выбрать марки и убедиться, что транзакция зафиксирована
     brands = await connection.fetch(query)
     print(brands)
 
