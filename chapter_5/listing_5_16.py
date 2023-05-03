@@ -14,8 +14,8 @@ async def main():
     async with connection.transaction():
         query = 'SELECT product_id, product_name FROM product'
         cursor = await connection.cursor(query)
-        await cursor.forward(500)
-        products = await cursor.fetch(100)
+        await cursor.forward(500)  # Сдвинуть курсор вперёд на 500 записей
+        products = await cursor.fetch(100)  # Получить следующие 100 записей
         for product in products:
             print(product)
     await connection.close()
