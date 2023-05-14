@@ -26,7 +26,7 @@ async def reduce(loop, pool, counters, chunk_size) -> Dict[str, int]:
         # Ждать завершения всех операций редукции
         reducer_chunks = await asyncio.gather(*reducers)
         # Снова разбить результаты и выполнить ещё одну операцию цикла
-        chunks = list(partition(reducer_chunks, chunk_size))
+        chunks = list(partition_lists(reducer_chunks, chunk_size))
         reducers.clear()
     return chunks[0][0]
 
