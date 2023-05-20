@@ -24,7 +24,7 @@ async def reduce(loop, pool, counters, chunk_size) -> Dict[str, int]:
             reducer = functools.partial(functools.reduce, merge_dictionaries, chunk)
             reducers.append(loop.run_in_executor(pool, reducer))
         # Ждать завершения всех операций редукции
-        reducer_chunks = await asyncio.gather(*reducers)
+        reducer_chunks = list(await asyncio.gather(*reducers))
         # Снова разбить результаты и выполнить ещё одну операцию цикла
         chunks = list(partition_lists(reducer_chunks, chunk_size))
         reducers.clear()
