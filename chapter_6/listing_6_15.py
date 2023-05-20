@@ -1,3 +1,6 @@
+"""
+Цикл событий в каждом процессе
+"""
 import asyncio
 import asyncpg
 from util import async_timed
