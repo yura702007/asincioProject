@@ -10,7 +10,7 @@ URL = 'https://www.example.com'
 if __name__ == '__main__':
     start = time.time()
 
-    with ThreadPoolExecutor() as pool:
+    with ThreadPoolExecutor(max_workers=1000) as pool:
         urls = [URL for _ in range(1000)]
         results = pool.map(get_status_code, urls)
         for result in results:
