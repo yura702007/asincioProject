@@ -18,9 +18,10 @@ def main():
         server.bind(('127.0.0.1', 8080))
         server.listen()
         while True:
-            connection, _ = server.accept()
+            connection, _ = server.accept()  # Блокируется в ожидании подключения клиентов
+            # Как только клиент подключился - создать поток для выполнения функции echo
             thread = Thread(target=echo, args=(connection,))
-            thread.start()
+            thread.start()  # Начать выполнение потока
 
 
 if __name__ == '__main__':
