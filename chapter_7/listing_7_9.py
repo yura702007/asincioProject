@@ -1,13 +1,14 @@
 """
 Блокировки и рекурсия
 """
-from threading import Thread, Lock
+from threading import Thread, RLock
 from typing import List
 
-list_lock = Lock()
+list_lock = RLock()
 
 
-def sum_list(int_list: List[int]) -> int:
+def sum_list(int_list: List[int]):
+    global result
     print('Ожидание блокировки')
     with list_lock:
         print('Блокировка захвачена')
