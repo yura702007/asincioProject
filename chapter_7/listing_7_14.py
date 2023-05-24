@@ -18,17 +18,17 @@ class LoadTester(Tk):
         self._refresh_ms = 25
 
         self._loop = loop
-        self._load_test = Optional[StressTest] = None
+        self._load_test = Optional[StressTest]
         self.title("URL REQUESTS")
 
         self._url_label = Label(self, text="URL:")
         self._url_label.grid(column=0, row=0)
 
-        self._url_field = Entry(self, width=10)
+        self._url_field = Entry(self, width=30)
         self._url_field.grid(column=1, row=0)
 
         self._request_label = Label(self, text='Number of Request')
-        self._request_label.grid(column=1, row=1)
+        self._request_label.grid(column=0, row=1)
 
         self._request_field = Entry(self, width=10)
         self._request_field.grid(column=1, row=1)
@@ -98,6 +98,7 @@ class LoadTester(Tk):
             test.start()
             self._loop = test
         else:
-            self._load_test.cansel()
+            self._load_test.cancel()
+            # TODO разобраться
             self._load_test = None
             self._submit['text'] = 'SUBMIT'
