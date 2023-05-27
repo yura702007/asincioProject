@@ -5,7 +5,7 @@ import numpy as np
 import time
 
 
-data_points = 4 * 10 ** 8
+data_points = 10 ** 9
 rows = 50
 columns = data_points // rows
 
