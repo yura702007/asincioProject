@@ -43,6 +43,7 @@ async def main():
     with ThreadPoolExecutor() as pool:
         for password in passwords:
             tasks.append(loop.run_in_executor(pool, partial(hashing, password)))
+    await asyncio.gather(*tasks)
 
 
 if __name__ == '__main__':
