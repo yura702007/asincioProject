@@ -1,3 +1,6 @@
+"""
+Многопоточность с numpy
+"""
 import asyncio
 from concurrent.futures.thread import ThreadPoolExecutor
 import numpy as np
@@ -19,7 +22,7 @@ matrix = np.arange(data_points).reshape(rows, columns)
 @async_timed()
 async def main():
     loop = asyncio.get_running_loop()
-    with ThreadPoolExecutor as pool:
+    with ThreadPoolExecutor() as pool:
         tasks = []
         for i in range(rows):
             mean = partial(mean_for_row, matrix, i)
