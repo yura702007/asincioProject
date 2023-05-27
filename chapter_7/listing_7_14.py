@@ -18,7 +18,7 @@ class LoadTester(Tk):
         self._refresh_ms = 25
 
         self._loop = loop
-        self._load_test = Optional[StressTest]
+        self._load_test: Optional[StressTest] = None
         self.title("URL REQUESTS")
 
         self._url_label = Label(self, text="URL:")
@@ -40,7 +40,7 @@ class LoadTester(Tk):
         self._pb_label.grid(column=0, row=3)
 
         self._pb = ttk.Progressbar(self, orient='horizontal', length=200, mode='determinate')
-        self._pb.grid(column=1, row=2, columnspan=2)
+        self._pb.grid(column=1, row=3, columnspan=2)
 
     def _update_bar(self, ptc: int):
         """
@@ -89,7 +89,7 @@ class LoadTester(Tk):
 
     def _start(self):
         if self._load_test is None:
-            self._submit['text'] = 'Cansel'
+            self._submit['text'] = 'Cancel'
             test = StressTest(self._loop,
                               self._url_field.get(),
                               int(self._request_field.get()),
@@ -99,6 +99,5 @@ class LoadTester(Tk):
             self._loop = test
         else:
             self._load_test.cancel()
-            # TODO разобраться
             self._load_test = None
             self._submit['text'] = 'SUBMIT'

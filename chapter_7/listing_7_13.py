@@ -28,7 +28,7 @@ class StressTest:
         future = asyncio.run_coroutine_threadsafe(self._make_requests(), self._loop)
         self._load_test_future = future
 
-    def cansel(self):
+    def cancel(self):
         if self._load_test_future:
             # Что бы отменить тест нужно вызвать метод cansel объекта _load_test_future
             self._loop.call_soon_threadsafe(self._load_test_future.cancel)
