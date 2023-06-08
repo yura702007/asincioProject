@@ -1,20 +1,24 @@
 """
 Асинхронный читатель стандартного ввода
 """
-import asyncio
-from asyncio import StreamReader
-from util import delay
 import sys
-from threading import Thread
+import asyncio
+from concurrent.futures import Future
 from asyncio import AbstractEventLoop
+from threading import Thread
+from util import delay, async_timed
 
 
-async def create_std_reader() -> StreamReader:
-    stream_reader = StreamReader()
-    protocol = asyncio.StreamReaderProtocol(stream_reader=stream_reader)
-    loop = asyncio.get_running_loop()
-    await loop.connect_read_pipe(lambda: protocol, sys.stdin)
-    return stream_reader
+def reader_stdin() -> int:
+    return int(input('Введите количество секунд: '))
+
+
+# async def create_std_reader():
+#     stream_reader = asyncio.StreamReader()
+#     protocol = asyncio.StreamReaderProtocol(stream_reader=stream_reader)
+#     loop = asyncio.get_running_loop()
+#     await loop.connect_read_pipe(lambda: protocol, sys.stdin)
+#     return stream_reader
 
 
 class ThreadedEventLoop(Thread):
@@ -27,15 +31,15 @@ class ThreadedEventLoop(Thread):
         self._loop.run_forever()
 
 
+@async_timed()
 async def main():
-    stdin_reader = await create_std_reader()
+    tasks = []
     while True:
-        delay_time: str = await stdin_reader.readline()
-        if delay_time:
-            await asyncio.create_task(delay(int(delay_time)))
-        else:
-            print('EXIT')
+        try:
+            tasks.append(asyncio.create_task(delay(reader_stdin())))
+        except ValueError:
             break
+    await asyncio.gather(*tasks)
 
 
 if __name__ == '__main__':
