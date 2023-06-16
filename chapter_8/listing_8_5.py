@@ -1,18 +1,29 @@
 """
-Асинхронный читатель стандартного ввода
+Использование стандартного ввода в отдельном потоке
 """
 import asyncio
-from asyncio import StreamReader
-import sys
+from util import delay, async_timed
 
 
-async def create_std_reader() -> StreamReader:
-    stream_reader = StreamReader()
-    protocol = asyncio.StreamReaderProtocol(stream_reader=stream_reader)
-    loop = asyncio.get_running_loop()
-    await loop.connect_read_pipe(lambda: protocol, sys.stdin)
-    return stream_reader
+def input_number():
+    number = input('Введите число: ')
+    if number:
+        return int(number)
+    return
+
+
+@async_timed()
+async def main():
+    coro = asyncio.to_thread(input_number)
+    while True:
+        task = asyncio.create_task(coro)
+        timing = await task
+        if timing:
+            await delay(timing)
+            coro = asyncio.to_thread(input_number)
+        else:
+            break
 
 
 if __name__ == '__main__':
-    asyncio.run(create_std_reader())
+    asyncio.run(main())
